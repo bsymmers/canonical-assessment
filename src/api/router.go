@@ -253,7 +253,7 @@ func putCollections(c *gin.Context) {
 	}
 	if newPutBody.ToDelete {
 		query = `
-			DELETE FROM books_collections WHERE collection_name = @name AND isbn = @isbn
+			DELETE FROM books_collections WHERE collection_name = @collection_name AND isbn = @isbn
 			`
 	} else {
 		query = `
