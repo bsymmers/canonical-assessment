@@ -1,0 +1,757 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Canonical Technical Exercise</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="177422be-260d-80f2-aee2-e5e49b3acb60" class="page sans"><header><h1 class="page-title">Canonical Technical Exercise</h1><p class="page-description"></p></header><div class="page-body"><h1 id="177422be-260d-80e6-a66a-c1b95f782975" class="">Step 1: Describe the expected user experience</h1><p id="177422be-260d-80c2-9718-dbae670c24b1" class="">This should include all CLI commands and their options, think of this as writing the help or<br/>manual page of your software ahead of time, including documented examples of user<br/>interactions.<br/></p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Find</summary><div class="indented"><blockquote id="177422be-260d-8001-af3b-f5c2f5f203fa" class=""><code>find</code></blockquote><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Find a book</summary><div class="indented"><blockquote id="177422be-260d-8093-86fc-fc7e34132e44" class=""><code>find -</code></blockquote><p id="177422be-260d-80f2-8c43-f6487956703e" class=""><strong>Flags:</strong></p><p id="177422be-260d-8019-9064-dcfb8708586a" class=""><code>-isbn</code> (required) - isbn of the book</p><p id="177422be-260d-80bb-87d2-d7eb48060099" class=""><code>-all</code> (optional) - show all books</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Find a collection</summary><div class="indented"><blockquote id="5bc0c4e0-8d96-419c-a7f5-c78ac6c13403" class=""><code>find -c</code></blockquote><p id="2cf4f5ec-6ef5-4257-9a5a-463e82a313a9" class=""><strong>Flags:</strong></p><p id="d936d34b-a2b5-4d42-aa45-0fcb533e0acd" class=""><code>-n</code> (optional) - collection name</p><p id="177422be-260d-808f-945a-d725b77f4eb7" class=""><code>-all</code> (optional) - show all collections</p></div></details></div></details><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="17c422be-260d-808f-8bb2-cf310b226496" class="code"><code class="language-Shell"># Find Harry Potter and the Deathly Hallows via its ISBN
+find -b -isbn 9780545010221
+# Find all books
+find -b -all
+# Find a collection named Favourites
+find -c -n &quot;Favourites&quot;</code></pre><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Add</summary><div class="indented"><blockquote id="177422be-260d-80d7-ae45-c2c8988ed131" class=""><code>add</code></blockquote><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Add a book</summary><div class="indented"><blockquote id="177422be-260d-807f-8faf-e9129c9876a7" class=""><code>add -b</code></blockquote><p id="177422be-260d-802d-97f6-eb96e519d724" class=""><strong>Flags:</strong></p><p id="177422be-260d-807c-8e17-f92e64677f37" class=""><code>-isbn</code> (required) - isbn of book</p><p id="177422be-260d-80d1-9c76-f73b1807759e" class=""><code>-t</code> (required) - title of book</p><p id="177422be-260d-80b8-a5d5-c46b294c5be2" class=""><code>-a</code> (required) - author of book</p><p id="177422be-260d-80cb-a0ec-e6d0c60fb9a6" class=""><code>-pd</code> (required) - published date</p><p id="177422be-260d-8067-ad96-c95a436db328" class=""><code>-e</code> (optional) - edition</p><p id="177422be-260d-807e-9eab-c7e0c9322e7f" class=""><code>-g</code> (optional) - genre</p><p id="177422be-260d-806d-8f81-e8f4a76e5456" class=""><code>-d</code> (optional) - description</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Add a collection</summary><div class="indented"><blockquote id="177422be-260d-80dc-a211-d9d59fbc0a0b" class=""><code>add -c</code></blockquote><p id="177422be-260d-80eb-91d3-ea9c819a5bb0" class=""><strong>Flags:</strong></p><p id="177422be-260d-804c-ad8e-e9817c26e909" class=""><code>-n</code> (required) - name of collection</p><p id="17c422be-260d-80a3-93af-d5f27eee4db2" class=""><code>-d</code> (optional) - description</p></div></details><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="17c422be-260d-80b8-b663-ec44899c98a9" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all"># Add Harry Potter and the Deathly Hallows to the Book Database
+add -b -isbn 9780545010222 -t &quot;Harry Potter and the Deathly Hallows&quot; -a &quot;JK Rowling&quot; -pd &quot;2007-07-01&quot;
+
+# Add a new Favourites collection to the database
+add -c -n &quot;Favourites&quot; -d &quot;My favourite books&quot;</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Update </summary><div class="indented"><blockquote id="177422be-260d-805d-bdb6-c47bd04b80ee" class=""><code>update</code></blockquote><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Update book</summary><div class="indented"><blockquote id="177422be-260d-80dc-9f30-dafe994a6cda" class=""><code>update -b</code></blockquote><p id="17a422be-260d-808d-bc31-ebd3d30060c7" class=""><strong>Flags:</strong></p><p id="17a422be-260d-80c8-948d-d20b50cf654d" class=""><code>-isbn</code> (required) - isbn of book</p><p id="17a422be-260d-80ab-975f-dd15102ac2bd" class=""><code>-t</code> (optional) - title of book</p><p id="17a422be-260d-8078-8e9d-dfc5d9d3494e" class=""><code>-a</code> (optional) - author of book</p><p id="17a422be-260d-80b6-b31b-c4eb5ba6eecd" class=""><code>-pd</code> (optional) - published date</p><p id="17a422be-260d-80da-9adf-d89a2627c69c" class=""><code>-e</code> (optional) - edition</p><p id="17a422be-260d-80a2-b25c-f881803c22cc" class=""><code>-g</code> (optional) - genre</p><p id="17a422be-260d-80a7-abb3-fdc8503cc15c" class=""><code>-d</code> (optional) - description</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Update collection</summary><div class="indented"><blockquote id="a5f9416e-2ed3-4574-9301-7910388b68af" class=""><code>update -c</code></blockquote><p id="ce817507-45bb-405d-9e1b-cf5f0fd635a2" class=""><strong>Flags:</strong></p><p id="adbf4ad5-e045-409b-8118-086b2d695c88" class=""><code>-n</code>  (required) - name of collection</p><p id="9383c422-ae3a-404a-aa67-c41c9c82c18e" class=""><code>-isbn</code> (required) - isbn of book to add to collection</p></div></details><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="17c422be-260d-803f-b0ba-ed78c423edd3" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all"># Update a books information
+update -b -isbn 9780545010222 -t &quot;Harry Potter and the Deathly Hallows&quot; -a &quot;JK Rowling&quot; -pd &quot;2007-07-01&quot; -e 1 -g &quot;Young Adult&quot;
+
+# Add Harry Potter and the Deathly Hallows to your favourites
+update -c -n &quot;Favourites&quot; -isbn 9780545010222</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Delete</summary><div class="indented"><blockquote id="a6085227-ad13-4824-98f6-afed737b4d9a" class=""><code>delete</code></blockquote><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Delete book</summary><div class="indented"><blockquote id="3730f92b-1a33-4ec2-93a6-8b06bb6d96e9" class=""><code>delete -b</code></blockquote><p id="e740afb5-8d61-4795-b20b-105f272120f1" class=""><strong>Flags:</strong></p><p id="ead1d4a3-e934-4fc0-84e8-327397311493" class=""><code>-isbn</code> (required) - isbn of book</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Delete collection</summary><div class="indented"><blockquote id="40c2bf47-af9b-4322-915f-881d5204792c" class=""><code>delete -c</code></blockquote><p id="1ef75c44-893f-4fa0-a183-03a524b4ce73" class=""><strong>Flags:</strong></p><p id="abb0cfee-c4db-4d9d-b64f-9025707e7631" class=""><code>-n</code> (required) - name of collection</p></div></details></div></details><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="17c422be-260d-8025-a795-ca274a1ed6ae" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all"># Delete Harry Potter and the Deathly Hallows
+delete -b -isbn 9780545010222
+
+# Delete the favourites collection
+delete -c -n &quot;Favourites&quot;</code></pre><hr id="177422be-260d-800d-9f3d-da4568f2e92a"/><h1 id="177422be-260d-80ea-9cc8-f8173a33551b" class="">Step 2: Describe the expected REST API</h1><p id="177422be-260d-80a6-8727-c43396026187" class="">This should include the documentation of the REST API, all supported methods and what they’ll<br/>be doing, examples of input and output data and what query parameters will be supported and<br/>what they’ll do. See for example the actual REST API documentation of LXD.<br/></p><h2 id="177422be-260d-804c-8eee-d6e36a29c752" class="">Retrieve a given book</h2><p id="177422be-260d-8090-b308-ed0ab6324f41" class="">Using a book’s unique isbn, retrieve a book and it’s given metadata. Alternatively with no isbn provided, retrieve a list of all books.</p><h3 id="177422be-260d-8036-9fb2-f1a08f47e3a0" class="">Request</h3><hr id="177422be-260d-80e8-bff9-d29b4f287f21"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-teal_background"><strong>GET</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/books</strong></mark></summary><div class="indented"><p id="7a43c4fe-eb0b-41bb-86c3-f49fceef7353" class=""><mark class="highlight-brown_background">isbn</mark> string</p></div></details><h3 id="177422be-260d-802d-bf56-ce6ecafe3b4b" class="">Response</h3><hr id="177422be-260d-80fa-b8e1-f118e991330e"/><p id="177422be-260d-806a-86db-ca9c039868a3" class="">200</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8019-b60e-c2784f032915" class="code"><code class="language-JSON">{
+		&quot;title&quot;: &quot;Harry Potter and the Deathly Hallows&quot;,
+		&quot;author&quot;: &quot;JK Rowling&quot;,
+		&quot;published_date&quot;: &quot;January 21, 2007&quot;,
+		&quot;edition&quot;: 1,
+		&quot;genre&quot;: &quot;Fantasy&quot;,
+		&quot;description&quot;: &quot;It&#x27;s no longer safe for Harry at Hogwarts, so he and his best friends, Ron and Hermione, are on the run.&quot;
+}</code></pre><p id="177422be-260d-804c-aa82-f8a6e78970af" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-80a1-9292-cf6e6b5d670f" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><p id="177422be-260d-809c-ba93-dfa1799dac87" class="">
+</p><h2 id="177422be-260d-800d-9236-f9beabf6cfb9" class="">Add a book</h2><p id="177422be-260d-80af-8901-d60865c7a245" class="">Upload a book and it’s given metadata to the system.</p><h3 id="177422be-260d-80e7-891d-fe2629109ee6" class="">Request</h3><hr id="177422be-260d-808e-9f5d-f4fed57f331a"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-blue_background"><strong>POST</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/books</strong></mark></summary><div class="indented"><p id="9f75be79-348f-4ac5-bd55-bb2ead7929c4" class=""><mark class="highlight-brown_background">isbn</mark> string (required)</p><p id="49b52278-c452-4e2e-adee-4cbe41cc8ea6" class=""><mark class="highlight-brown_background">title</mark> string (required)</p><p id="59dfd86b-f7fb-4705-a391-ae55a81f9de1" class=""><mark class="highlight-brown_background">author</mark> string (required)</p><p id="aa72ae05-f065-4bc1-acf1-b0e84cc824ea" class=""><mark class="highlight-brown_background">published_date</mark> string (required)</p><p id="0acf33cd-33ce-416f-b25f-81e3ff3ff23a" class=""><mark class="highlight-brown_background">edition</mark> integer</p><p id="23f577be-5609-4587-9b03-348d1d6ff223" class=""><mark class="highlight-brown_background">genre</mark> array of strings</p><p id="49b345dc-8ef8-47e0-9999-731d6419bc27" class=""><mark class="highlight-brown_background">description</mark> string</p><p id="575796d7-dcf8-4340-b400-fe108b3fb61b" class="">
+</p></div></details><h3 id="177422be-260d-8050-a5b3-ed667617400a" class="">Response</h3><hr id="177422be-260d-804e-953b-c4f4ebb03185"/><p id="177422be-260d-80a3-bdf7-d22a1fdc28ba" class="">201</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8098-8022-d3020602f3e5" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Created&quot;,
+	&quot;status_code&quot;: 201
+}</code></pre><p id="177422be-260d-80c3-b819-d0ac235e8225" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-80d9-9e77-d4ab7c0096b2" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><h2 id="177422be-260d-8097-9778-ce8e62669a98" class="">Delete a book</h2><p id="177422be-260d-804e-a697-ebfe391fa6b0" class="">Delete a book using it’s unique isbn and remove it from any collections it belongs to</p><h3 id="177422be-260d-80cf-9b28-f6f7d7480a20" class="">Request</h3><hr id="177422be-260d-8006-babb-cb061103819d"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-red_background"><strong>DELETE</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/books</strong></mark></summary><div class="indented"><p id="ce2c411c-9a7f-4919-828d-eaabd9707dc4" class=""><mark class="highlight-brown_background">isbn</mark> string (required)</p></div></details><h3 id="177422be-260d-80af-89aa-d26ce43f4dc2" class="">Response</h3><hr id="177422be-260d-8084-92a9-f07ad0cfbfcd"/><p id="177422be-260d-802f-a344-d41fb96b4f7b" class="">204</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-80ad-b5ca-e29d19cfda37" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Success&quot;,
+	&quot;status_code&quot;: 204
+}</code></pre><p id="177422be-260d-80e8-ad47-fce60b86f05f" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8050-8dca-e1b7bb8669e8" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><h2 id="177422be-260d-807f-825a-c63b144c33e4" class="">Retrieve a collection</h2><p id="177422be-260d-80a5-afc4-c6bacbaac68d" class="">Given the name of a collection, retrieve a list of all of the book titles in the given collection or a list of all collections and their descriptions.</p><h3 id="177422be-260d-8036-84ec-fc6ef9dc41a5" class="">Request</h3><hr id="177422be-260d-80b8-bfba-ff8a031b8a0a"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-teal_background"><strong>GET</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/collections</strong></mark></summary><div class="indented"><p id="f6678fe2-d1df-446a-bcbc-f259a51984d1" class=""><mark class="highlight-brown_background">collection_name</mark> string</p></div></details><h3 id="177422be-260d-8085-afa2-d19d2e26cf23" class="">Response</h3><hr id="177422be-260d-8087-9b56-c0973412bd86"/><p id="177422be-260d-8018-b415-d9ac4d626545" class="">200</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-80ea-a373-c7020265d670" class="code"><code class="language-JSON">{
+    &quot;Favourites&quot;: {
+        &quot;isbn&quot;: &quot;9780545010222&quot;,
+        &quot;title&quot;: &quot;Harry Potter and the Deathly Hallows&quot;,
+        &quot;author&quot;: &quot;JK Rowling&quot;,
+        &quot;published_date&quot;: &quot;2001-01-07&quot;,
+        &quot;edition&quot;: 1,
+        &quot;genre&quot;: &quot;Fantasy&quot;,
+        &quot;description&quot;: &quot;It&#x27;s no longer safe for Harry at Hogwarts, so he and his best friends, Ron and Hermione, are on the run.&quot;
+    }
+}</code></pre><p id="177422be-260d-8010-b26d-ff24045e8c85" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8021-964a-f0c2ee981b41" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><h2 id="177422be-260d-8001-8fb3-d28a57554ce4" class="">Delete a collection</h2><p id="177422be-260d-808e-a1f1-dae9a83f9bca" class="">Using the provided name, the collection will be deleted (but not the books!)</p><h3 id="177422be-260d-8083-8617-d4d5d0bca825" class="">Request</h3><hr id="177422be-260d-8073-a6b0-e68eb8a7cb52"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-red_background"><strong>DELETE</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/collections</strong></mark></summary><div class="indented"><p id="9fc8d781-f156-4f85-9649-8ca9f396fb3c" class=""><mark class="highlight-brown_background">collection_name</mark> string (required)</p></div></details><h3 id="177422be-260d-809b-93c6-fd8a160c5846" class="">Response</h3><hr id="177422be-260d-80fc-9851-c76c5bf3444d"/><p id="177422be-260d-8050-b416-c68c2b641e74" class="">204</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8005-bd97-c15e10ca2509" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Success&quot;,
+	&quot;status_code&quot;: 204
+}</code></pre><p id="177422be-260d-80bc-a716-ff1be8946f56" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8096-a40e-c9ed24af7f58" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><h2 id="177422be-260d-8078-8f26-e5d34fbb7b8b" class="">Create a collection</h2><p id="177422be-260d-807f-86c4-f04a55d10fd9" class="">Create an empty collection with a given unique name.</p><h3 id="177422be-260d-809c-b8b0-ea82dde31a0b" class="">Request</h3><hr id="177422be-260d-80fb-9427-f34209c192ee"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-blue_background"><strong>POST</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/collections</strong></mark></summary><div class="indented"><p id="9ff0a161-ea8f-446b-a6a4-b8310851a21b" class=""><mark class="highlight-brown_background">collection_name</mark> string (required)</p></div></details><h3 id="177422be-260d-80c0-9cff-f5390485ba4a" class="">Response</h3><hr id="177422be-260d-80bc-a599-f5b9980340fa"/><p id="177422be-260d-807c-9132-ffa81c8b8fac" class="">201</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8001-a897-ceea7c91f7af" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Created&quot;,
+	&quot;status_code&quot;: 201
+}</code></pre><p id="177422be-260d-8030-a7c5-d9a71a2b4f02" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-800f-a771-f4c25b2a1b63" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><h2 id="177422be-260d-80d8-a345-c1372a3fbd8e" class="">Update a collection</h2><p id="177422be-260d-8038-8966-d9765c34c0e8" class="">Add book to a given collection by inputting the collection name and an isbn of the book you’re wanting to add. Similarly you can remove a book by following the same steps and setting the to_delete parameter to true.</p><h3 id="177422be-260d-8076-897d-ca9e9ed05074" class="">Request</h3><hr id="177422be-260d-8084-8604-dbefd1fadc38"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-purple_background"><strong>PUT</strong></mark><strong> </strong><mark class="highlight-orange_background"><strong>/collections</strong></mark></summary><div class="indented"><p id="351dd8d5-99bc-4739-b1be-a42210dd160c" class=""><mark class="highlight-brown_background">collection_name</mark> string (required)</p><p id="96fd45a7-3677-4846-8c4e-9b4a1ca6ade7" class=""><mark class="highlight-brown_background">isbn</mark> string (required)</p><p id="177422be-260d-800a-bd81-c6649fecfda7" class=""><mark class="highlight-brown_background">to_delete</mark> boolean <em>default: to_delete=False</em></p></div></details><h3 id="177422be-260d-8054-87a3-cb8740311005" class="">Response</h3><hr id="177422be-260d-802c-bba8-db84ea1896ca"/><p id="177422be-260d-804b-9c9e-f02959b9dd93" class="">202</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-8043-80c2-fb8a056f6c4d" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Success&quot;,
+	&quot;status_code&quot;: 202
+}</code></pre><p id="177422be-260d-80a0-b037-d7efd41cac2e" class="">400</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="177422be-260d-80cb-ba5c-f03672f84ab9" class="code"><code class="language-JSON">{
+	&quot;status&quot;: &quot;Error&quot;,
+	&quot;status_code&quot;: 400
+}</code></pre><hr id="177422be-260d-807d-a486-c849991e416c"/><h1 id="177422be-260d-8095-8562-ca694e0d0640" class="">Step 3: Describe the database structure</h1><p id="177422be-260d-803f-94fc-cae8502fbc77" class="">This should include all the tables you expect to use to store this data, for each table, all its<br/>expected columns, column types, relations, constraints and any index you’d like to add.<br/>You may write this directly in SQL or use tables or text as an alternative way to describe what<br/>you’re going for.<br/></p><h2 id="177422be-260d-809e-9b41-dbf263b52591" class="">Books</h2><table id="177422be-260d-804e-b2e9-f2b79da7c1d6" class="simple-table"><thead class="simple-table-header"><tr id="3b81df43-d8fd-4df1-aa1e-d001fcf4b3a4"><th id="bwls" class="simple-table-header-color simple-table-header">ISBN</th><th id=":R}]" class="simple-table-header-color simple-table-header">Title</th><th id="Tj_B" class="simple-table-header-color simple-table-header">Author</th><th id="zbcY" class="simple-table-header-color simple-table-header">Published Date</th><th id="~&lt;:n" class="simple-table-header-color simple-table-header">Edition</th><th id="fRBO" class="simple-table-header-color simple-table-header">Genre</th><th id="gdCT" class="simple-table-header-color simple-table-header">Description</th></tr></thead><tbody><tr id="40150483-48ac-4e2e-9120-09803caa9b94"><td id="bwls" class=""><strong>PK</strong> VARCHAR(255)</td><td id=":R}]" class="">VARCHAR(255)</td><td id="Tj_B" class="">VARCHAR(255)</td><td id="zbcY" class="">DATE</td><td id="~&lt;:n" class="">INT</td><td id="fRBO" class="">VARCHAR(255)</td><td id="gdCT" class="">VARCHAR(255)</td></tr></tbody></table><h2 id="177422be-260d-80f2-86a5-c668d238718e" class="">Collections</h2><table id="177422be-260d-808d-83d4-ca565d85cb2b" class="simple-table"><thead class="simple-table-header"><tr id="597a08a4-b595-478a-ba61-f9e702d65a39"><th id="XaRL" class="simple-table-header-color simple-table-header">Name</th><th id="ZY^W" class="simple-table-header-color simple-table-header">Description</th></tr></thead><tbody><tr id="e1bf9dc7-a265-4933-8391-834d29739561"><td id="XaRL" class=""><strong>PK</strong> VARCHAR(255)</td><td id="ZY^W" class="">VARCHAR(255)</td></tr></tbody></table><h2 id="177422be-260d-80c6-aac4-e07cf3457112" class="">Books_Collections</h2><table id="17a422be-260d-8032-9659-db10731a6dfe" class="simple-table"><thead class="simple-table-header"><tr id="5840bc7c-2130-42df-ba18-5e5d3aa7421b"><th id="fjc?" class="simple-table-header-color simple-table-header">ISBN</th><th id="XY`D" class="simple-table-header-color simple-table-header">Collection_name</th></tr></thead><tbody><tr id="689713a3-ee2a-486a-b62a-611a0fa63bf9"><td id="fjc?" class=""><strong>PK</strong> <strong>FK </strong>VARCHAR(255)</td><td id="XY`D" class=""><strong>PK</strong> <strong>FK</strong> VARCHAR(255)</td></tr></tbody></table><p id="17a422be-260d-8026-96b4-fff66260a3e5" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
