@@ -3,9 +3,9 @@ package api
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
@@ -13,31 +13,27 @@ import (
 )
 
 type Book struct {
-	ISBN        string      `json:"isbn"`
-	Title       string      `json:"title"`
-	Author      string      `json:"author"`
-	Date        pgtype.Date `json:"published_date"`
+	ISBN        string      `json:"isbn" binding:"required"`
+	Title       string      `json:"title" binding:"required"`
+	Author      string      `json:"author" binding:"required"`
+	Date        pgtype.Date `json:"published_date" binding:"required"`
 	Edition     float64     `json:"edition"`
 	Genre       string      `json:"genre"`
 	Description string      `json:"description"`
 }
 
 type Collection struct {
-	Name        string `json:"name"`
+	Name        string `json:"name" binding:"required"`
 	Description string `json:"description"`
 }
 
-// TODO: add test data
-var DB_CONN *pgx.Conn
-
-func newPostgres(username, password, host, port, dbName string) (*pgx.Conn, error) {
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", username, password, host, port, dbName)
-	conn, err := pgx.Connect(context.Background(), connStr)
-	if err != nil {
-		return nil, err
-	}
-	return conn, nil
+type PutBody struct {
+	Name     string `json:"collection_name" binding:"required"`
+	ISBN     string `json:"isbn" binding:"required"`
+	ToDelete bool   `json:"to_delete"`
 }
+
+var DB_CONN *pgx.Conn
 
 func NewRouter() {
 	var err error
@@ -58,17 +54,7 @@ func NewRouter() {
 	defer DB_CONN.Close(context.Background())
 }
 
-func processor(c *gin.Context, incomingObj any) bool {
-	if err := c.ShouldBind(incomingObj); err != nil {
-		c.String(http.StatusBadRequest, "bad request: %v", err)
-		return false
-	}
-	// fmt.Println(incomingObj)
-	return true
-}
-
 // Book Endpoints
-// TODO: add filtering
 func getBooks(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
 	if len(queryParams) == 0 {
@@ -76,39 +62,36 @@ func getBooks(c *gin.Context) {
 		SELECT * FROM books
 	`
 		rows, err := DB_CONN.Query(context.Background(), query)
-		if err != nil {
-			log.Printf("Error Fetching Book Details")
-			c.String(http.StatusBadRequest, "bad request: %v", err)
+		if errorHandler(err, c, "Error Fetching Book Details") {
 			return
 		}
 		defer rows.Close()
-
 		var books []Book
-		// Iterate over the retrieved rows and scan each row into a Book struct.
 		for rows.Next() {
 			var book Book
 			err := rows.Scan(&book.ISBN, &book.Title, &book.Author, &book.Date, &book.Edition, &book.Genre, &book.Description)
-			if err != nil {
-				log.Printf("Error Fetching Book Details")
-				c.String(http.StatusBadRequest, "bad request: %v", err)
+			if errorHandler(err, c, "Error Fetching Book Details") {
 				return
 			}
 			books = append(books, book)
 		}
 		c.JSON(http.StatusAccepted, books)
 	} else {
-		query := `
-		SELECT * FROM books WHERE isbn = @isbn
-	`
-		args := pgx.NamedArgs{
-			"isbn": queryParams["isbn"][0],
+		var query strings.Builder
+		query.WriteString(fmt.Sprintf("SELECT * FROM books WHERE isbn = '%s'", queryParams["isbn"][0]))
+		if len(c.Query("author")) > 0 {
+			query.WriteString(fmt.Sprintf(" AND author = '%s'", c.Query("author")))
 		}
-		row := DB_CONN.QueryRow(context.Background(), query, args)
-		var book Book
-		err := row.Scan(&book.ISBN, &book.Title, &book.Author, &book.Date, &book.Edition, &book.Genre, &book.Description)
-		if err != nil {
-			log.Printf("Error Fetching Book Details")
-			c.String(http.StatusBadRequest, "bad request: %v", err)
+		if len(c.Query("genre")) > 0 {
+			query.WriteString(fmt.Sprintf(" AND genre = '%s'", c.Query("genre")))
+		}
+		if len(c.Query("published_date")) > 0 {
+			query.WriteString(fmt.Sprintf(" AND date = '%s'", c.Query("date")))
+		}
+		s := query.String()
+		row := DB_CONN.QueryRow(context.Background(), s)
+		book, e := scanRow(row)
+		if errorHandler(e, c, "Error Fetching Book Details") {
 			return
 		}
 		c.JSON(http.StatusAccepted, book)
@@ -136,29 +119,33 @@ func postBooks(c *gin.Context) {
 		"description": newBook.Description,
 	}
 	_, err := DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Println("Error Inserting Book Details")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	if errorHandler(err, c, "Error Inserting Book Details") {
+		return
 	}
-	c.JSON(http.StatusAccepted, newBook)
+	c.JSON(http.StatusCreated, newBook)
 }
 
 func deleteBooks(c *gin.Context) {
-	queryParams := c.Request.URL.Query()
 	query := `
-		DELETE FROM books WHERE isbn = @isbn
-	`
+        DELETE FROM books_collections WHERE isbn = @isbn
+    `
+
 	args := pgx.NamedArgs{
-		"isbn": queryParams["isbn"][0],
+		"isbn": c.Query("isbn"),
 	}
 
 	_, err := DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Printf("Error Fetching Book Details")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	if errorHandler(err, c, "Error Fetching Book Details") {
 		return
 	}
-	c.Status(200)
+	query = `
+		DELETE FROM books WHERE isbn = @isbn
+	`
+	_, err = DB_CONN.Exec(context.Background(), query, args)
+	if errorHandler(err, c, "Error Fetching Book Details") {
+		return
+	}
+	c.Status(204)
 
 }
 
@@ -170,21 +157,16 @@ func getCollections(c *gin.Context) {
 		SELECT * FROM collections
 	`
 		rows, err := DB_CONN.Query(context.Background(), query)
-		if err != nil {
-			log.Printf("Error Fetching Collection Details")
-			c.String(http.StatusBadRequest, "bad request: %v", err)
+		if errorHandler(err, c, "Error Fetching Collection Details") {
 			return
 		}
 		defer rows.Close()
 
 		var collections []Collection
-		// Iterate over the retrieved rows and scan each row into a Book struct.
 		for rows.Next() {
 			var collection Collection
 			err := rows.Scan(&collection.Name, &collection.Description)
-			if err != nil {
-				log.Printf("Error Fetching Book Details")
-				c.String(http.StatusBadRequest, "bad request: %v", err)
+			if errorHandler(err, c, "Error Fetching Collection Details") {
 				return
 			}
 			collections = append(collections, collection)
@@ -192,20 +174,19 @@ func getCollections(c *gin.Context) {
 		c.JSON(http.StatusAccepted, collections)
 	} else {
 		query := `
-		SELECT * FROM collections WHERE name = @name
+		SELECT books.isbn, books.title, books.author, books.date, books.edition, books.genre, books.description
+		 FROM books_collections
+		 INNER JOIN books ON books_collections.isbn=books.isbn AND books_collections.collection_name = @name
 	`
 		args := pgx.NamedArgs{
-			"name": queryParams["name"][0],
+			"name": c.Query("collection_name"),
 		}
 		row := DB_CONN.QueryRow(context.Background(), query, args)
-		var collection Collection
-		err := row.Scan(&collection.Name, &collection.Description)
-		if err != nil {
-			log.Printf("Error Fetching Book Details")
-			c.String(http.StatusBadRequest, "bad request: %v", err)
+		book, e := scanRow(row)
+		if errorHandler(e, c, "Error Fetching Collection Details") {
 			return
 		}
-		c.JSON(http.StatusAccepted, collection)
+		c.JSON(http.StatusAccepted, gin.H{c.Query("collection_name"): book})
 
 	}
 
@@ -225,60 +206,52 @@ func postCollections(c *gin.Context) {
 		"description":     newCollection.Description,
 	}
 	_, err := DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Println("Error Inserting Book into Collection")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	if errorHandler(err, c, "Error Inserting Book into Collection") {
+		return
 	}
-	c.JSON(http.StatusAccepted, newCollection)
+	c.JSON(http.StatusCreated, newCollection)
 }
 
 func deleteCollections(c *gin.Context) {
-	queryParams := c.Request.URL.Query()
 	query := `
-        DELETE FROM collections WHERE collection_name = @name
+        DELETE FROM books_collections WHERE collection_name = @name
     `
 	args := pgx.NamedArgs{
-		"name": queryParams["name"][0],
+		"name": c.Query("collection_name"),
 	}
 	_, err := DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Printf("Error Fetching Book Details")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	if errorHandler(err, c, "Error Fetching Collection Details") {
 		return
 	}
 	query = `
-        DELETE FROM books_collections WHERE collection_name = @name
+        DELETE FROM collections WHERE collection_name = @name
     `
 	_, err = DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Printf("Error Fetching Book Details")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	if errorHandler(err, c, "Error Fetching Collection Details") {
 		return
 	}
-	c.Status(200)
+	c.Status(204)
 
 }
 
 func putCollections(c *gin.Context) {
-	// TODO: call getbook and then depending on response add book to collections books table
-	queryParams := c.Request.URL.Query()
+	var newPutBody PutBody
+	isValid := processor(c, &newPutBody)
+	if !isValid {
+		return
+	}
 	query := `
 		SELECT * FROM books WHERE isbn = @isbn
 	`
 	args := pgx.NamedArgs{
-		"isbn": queryParams["isbn"][0],
+		"isbn": newPutBody.ISBN,
 	}
 	row := DB_CONN.QueryRow(context.Background(), query, args)
-	var book Book
-	err := row.Scan(&book.ISBN, &book.Title, &book.Author, &book.Date, &book.Edition, &book.Genre, &book.Description)
-	if err != nil {
-		log.Printf("Error Fetching Book Details")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	_, e := scanRow(row)
+	if errorHandler(e, c, "Error Fetching Book Details") {
 		return
 	}
-	toDelete, ok := queryParams["to_delete"]
-	// If the key exists
-	if ok && toDelete[0] == "false" {
+	if newPutBody.ToDelete {
 		query = `
 			DELETE FROM books_collections WHERE collection_name = @name AND isbn = @isbn
 			`
@@ -288,14 +261,13 @@ func putCollections(c *gin.Context) {
 			`
 	}
 	args = pgx.NamedArgs{
-		"isbn":            queryParams["isbn"][0],
-		"collection_name": queryParams["collection_name"][0],
+		"isbn":            newPutBody.ISBN,
+		"collection_name": newPutBody.Name,
 	}
-	_, err = DB_CONN.Exec(context.Background(), query, args)
-	if err != nil {
-		log.Println("Error Inserting Book into Collection")
-		c.String(http.StatusBadRequest, "bad request: %v", err)
+	_, err := DB_CONN.Exec(context.Background(), query, args)
+	if errorHandler(err, c, "Error Inserting Book into Collection") {
+		return
 	}
-	c.Status(200)
+	c.Status(202)
 
 }
